@@ -190,32 +190,32 @@ function guardarMateriasAprobadas() {
 }
 
 // Función para cargar materias aprobadas desde almacenamiento local
-function cargarMateriasAprobadas() {
-    const materiasAprobadas = JSON.parse(localStorage.getItem('materiasAprobadas')) || [];
-    const semestresSeleccionados = Array.from(document.querySelectorAll('.semestre-aprobado:checked')).map(input => input.value);
+// function cargarMateriasAprobadas() {
+//     const materiasAprobadas = JSON.parse(localStorage.getItem('materiasAprobadas')) || [];
+//     const semestresSeleccionados = Array.from(document.querySelectorAll('.semestre-aprobado:checked')).map(input => input.value);
 
-    const materiasContainer = document.getElementById('materiasAprobadasContainer');
-    materiasContainer.innerHTML = '';
+//     const materiasContainer = document.getElementById('materiasAprobadasContainer');
+//     materiasContainer.innerHTML = '';
 
-    semestresSeleccionados.forEach(semestre => {
-        const semestreData = materiasData.semestres.find(s => s.semestre === semestre);
+//     semestresSeleccionados.forEach(semestre => {
+//         const semestreData = materiasData.semestres.find(s => s.semestre === semestre);
 
-        if (semestreData) {
-            semestreData.materias.forEach(materia => {
-                const materiaDiv = document.createElement('div');
-                const isChecked = materiasAprobadas.includes(materia.nombre);
-                materiaDiv.innerHTML = `
-                    <input type="checkbox" class="materia-aprobada" value="${materia.nombre}" ${isChecked ? 'checked' : ''}>
-                    <label>${materia.nombre}</label>
-                `;
-                materiasContainer.appendChild(materiaDiv);
-            });
-        }
-    });
-}
+//         if (semestreData) {
+//             semestreData.materias.forEach(materia => {
+//                 const materiaDiv = document.createElement('div');
+//                 const isChecked = materiasAprobadas.includes(materia.nombre);
+//                 materiaDiv.innerHTML = `
+//                     <input type="checkbox" class="materia-aprobada" value="${materia.nombre}" ${isChecked ? 'checked' : ''}>
+//                     <label>${materia.nombre}</label>
+//                 `;
+//                 materiasContainer.appendChild(materiaDiv);
+//             });
+//         }
+//     });
+// }
 
 // Registrar evento para guardar materias aprobadas
-document.getElementById('guardarMateriasAprobadas').addEventListener('click', guardarMateriasAprobadas);
+// document.getElementById('guardarMateriasAprobadas').addEventListener('click', guardarMateriasAprobadas);
 
 // Actualizar las materias aprobadas al cambiar los semestres seleccionados
 document.querySelectorAll('.semestre-aprobado').forEach(input => {
@@ -223,7 +223,7 @@ document.querySelectorAll('.semestre-aprobado').forEach(input => {
 });
 
 // Llamar a la función cargarMaterias para inicializar las materias
-cargarMateriasAprobadas();
+// cargarMateriasAprobadas();
 
 // Función para cargar las materias en el HTML según los semestres seleccionados
 function cargarMaterias() {

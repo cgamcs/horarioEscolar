@@ -14,35 +14,33 @@
     <main>
         <div class="formulario">
             <!-- SECCION SABATINOS -->
-            <div class="opcionSabatinos">
-                <p>¿Cursas materias en sabatino?</p>
-                <select name="opcionSabatino" id="opcionSabatino" class="selector-principal">
-                    <option value="" disabled selected>-- Selecciona una opción --</option>
-                    <option value="Si">Si</option>
-                    <option value="No">No</option>
-                </select>
+            <p>¿Cursas materias en sabatino?</p>
+            <select name="opcionSabatino" id="opcionSabatino" class="selector-principal">
+                <option value="" disabled selected>-- Selecciona una opción --</option>
+                <option value="Si">Si</option>
+                <option value="No">No</option>
+            </select>
 
-                <div class="sabatinos">
-                    <p>Escoge tus semestres con materias en Sabatinos</p>
-                    <div class="semestres">
-                        <input type="checkbox" class="semestre-sabatino" value="1er semestre"> <label>1er semestre</label> 
-                        <input type="checkbox" class="semestre-sabatino" value="2do semestre"> <label>2do semestre</label> 
-                        <input type="checkbox" class="semestre-sabatino" value="3er semestre"> <label>3er semestre</label> 
-                        <input type="checkbox" class="semestre-sabatino" value="4to semestre"> <label>4to semestre</label> 
-                        <input type="checkbox" class="semestre-sabatino" value="5to semestre"> <label>5to semestre</label> 
-                        <input type="checkbox" class="semestre-sabatino" value="6to semestre"> <label>6to semestre</label> 
-                        <input type="checkbox" class="semestre-sabatino" value="7mo semestre"> <label>7mo semestre</label> 
-                        <input type="checkbox" class="semestre-sabatino" value="8vo semestre"> <label>8vo semestre</label>
-                    </div>
+            <div class="sabatinos">
+                <p>Escoge tus semestres con materias en Sabatinos</p>
+                <div class="semestres">
+                    <input type="checkbox" class="semestre-sabatino" value="1er semestre"> <label>1er semestre</label> 
+                    <input type="checkbox" class="semestre-sabatino" value="2do semestre"> <label>2do semestre</label> 
+                    <input type="checkbox" class="semestre-sabatino" value="3er semestre"> <label>3er semestre</label> 
+                    <input type="checkbox" class="semestre-sabatino" value="4to semestre"> <label>4to semestre</label> 
+                    <input type="checkbox" class="semestre-sabatino" value="5to semestre"> <label>5to semestre</label> 
+                    <input type="checkbox" class="semestre-sabatino" value="6to semestre"> <label>6to semestre</label> 
+                    <input type="checkbox" class="semestre-sabatino" value="7mo semestre"> <label>7mo semestre</label> 
+                    <input type="checkbox" class="semestre-sabatino" value="8vo semestre"> <label>8vo semestre</label>
+                </div>
 
-                    <!-- Sección única para escoger materias aprobadas -->
-                    <div class="materias">
-                        <p>Escoge tus materias que estan en sabatinos</p>
-                        <div id="materiasSabatinoContainer">
-                            <!-- Materias -->
-                        </div>
-                        <button id="guardarMateriasSabatino">Guardar Materias en Sabatino</button>
+                <!-- Sección única para escoger materias aprobadas -->
+                <div class="materias">
+                    <p>Escoge tus materias que estan en sabatinos</p>
+                    <div id="materiasSabatinoContainer">
+                        <!-- Materias -->
                     </div>
+                    <button id="guardarMateriasSabatino">Guardar Materias en Sabatino</button>
                 </div>
             </div>
             <!-- SECCION SABATINOS -->
@@ -70,7 +68,6 @@
             <!-- SECCION SEMESTRES APROBADOS -->
 
             <!-- SECCION RANGO DE HORAS -->
-            <div class="rangoHorarios">
                 <p>Escoge tu rango de horas</p>
                 <div id="contenedor-rangos">
                     <div class="rango-tiempo" id="rango-1">
@@ -87,7 +84,6 @@
                     <p>Rangos guardados:</p>
                     <div id="lista-rangos"></div>
                 </div>
-            </div>
             <!-- SECCION RANGO DE HORAS -->
 
             <!-- <input type="time" name="hora-inicio" id="hora"> <label for="">Hora inicio</label>
@@ -101,9 +97,8 @@
             </div>             -->
 
             <!-- SECCION SEMESTRES A CURSAR -->
+            <p>Escoge tus semestres a cursar</p>
             <div class="semestres">
-                <p>Escoge tus semestres a cursar</p>
-
                 <input type="checkbox" class="semestre" value="2do semestre"> <label>2do semestre</label> 
                 <input type="checkbox" class="semestre" value="3er semestre"> <label>3er semestre</label> 
                 <input type="checkbox" class="semestre" value="4to semestre"> <label>4to semestre</label> 

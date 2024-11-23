@@ -14,7 +14,7 @@ body {
     color: #000;
     font-size: 2rem;
     margin: 0 auto;
-    width: 80%;
+    width: 70%;
     height: 100vh;
     max-height: 1200px;
 }
@@ -102,11 +102,4 @@ button:hover {
 }
 .btn-azul {
     background-color: #2196F3;
-}
-.rangoHorarios,
-.opcionSabatinos {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 12px;
-    margin-top: 2rem;
 }
