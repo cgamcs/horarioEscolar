@@ -18,7 +18,7 @@ body {
     height: 100vh;
     max-height: 1200px;
 }
-p { margin: 0; }
+p { margin: 2rem 0 1rem 0; }
 .horario table {
     width: 100%;
     border-collapse: collapse;
@@ -102,4 +102,7 @@ button:hover {
 }
 .btn-azul {
     background-color: #2196F3;
+}
+p.rango-horas{
+    margin: 0;
 }

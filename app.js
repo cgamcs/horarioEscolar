@@ -79,30 +79,6 @@ document.querySelectorAll(".semestre-sabatino").forEach(checkbox => {
     });
 });
 
-// ============================================
-
-// document.getElementById("guardarMateriasSabatino").addEventListener("click", function () {
-//     const materiasSeleccionadas = [...document.querySelectorAll(".materia-sabatina:checked")];
-//     if (materiasSeleccionadas.length === 0) {
-//         alert("No has seleccionado ninguna materia.");
-//         return;
-//     }
-
-//     let totalCreditosSabatino = 0;
-//     const materiasGuardadas = materiasSeleccionadas.map(input => {
-//         const materiaNombre = input.value;
-//         const materiaData = buscarMateriaPorNombre(materiaNombre);
-//         if (materiaData) {
-//             totalCreditosSabatino += parseInt(materiaData.Creditos) || 0; // Sumar créditos de la materia
-//         }
-//         return materiaNombre;
-//     });
-
-//     // Guardar las materias seleccionadas en LocalStorage
-//     localStorage.setItem("materiasSabatinas", JSON.stringify(materiasGuardadas));
-//     alert(`Materias guardadas: ${materiasGuardadas.join(", ")}\nTotal créditos: ${totalCreditosSabatino}`);
-// });
-
 document.getElementById("guardarMateriasSabatino").addEventListener("click", function () {
     const materiasSeleccionadas = [...document.querySelectorAll(".materia-sabatina:checked")];
     let totalCreditosSabatino = 0;
@@ -131,7 +107,6 @@ document.getElementById("guardarMateriasSabatino").addEventListener("click", fun
     alert(`Materias sabatinas guardadas: ${materiasGuardadas.join(", ")}\nTotal créditos sabatinos: ${totalCreditosSabatino}`);
     console.log("Créditos sabatinos guardados:", totalCreditosSabatino);
 });
-
 
 // Función para buscar una materia por su nombre
 function buscarMateriaPorNombre(nombreMateria) {
@@ -171,56 +146,52 @@ function generarOpcionesMaterias() {
     }
 }
 
-// Función para guardar materias aprobadas seleccionadas
-function guardarMateriasAprobadas() {
-    const materiasAprobadas = Array.from(document.querySelectorAll('.materia-aprobada:checked'))
+// Función para guardar materias reprobadas seleccionadas
+function guardarMateriasReprobadas() {
+    const materiasReprobadas = Array.from(document.querySelectorAll('.materia-reprobada:checked'))
         .map(input => input.value);
-
-    // Filtrar materias para excluir las de primer semestre
-    const materiasFiltradas = materiasAprobadas.filter(nombreMateria => {
-        // Verifica si la materia está en el primer semestre
-        const semestreData = materiasData.semestres.find(sem => sem.semestre === "1er semestre");
-        return !semestreData || !semestreData.materias.some(m => m.nombre === nombreMateria);
-    });
-
-    localStorage.setItem('materiasAprobadas', JSON.stringify(materiasFiltradas));
-    alert('Materias aprobadas guardadas exitosamente');
-
-    console.log(materiasFiltradas);
+    localStorage.setItem('materiasReprobadas', JSON.stringify(materiasReprobadas));
+    alert('Materias reprobadas guardadas correctamente');
 }
 
+document.getElementById('guardarMateriasReprobadas').addEventListener('click', guardarMateriasReprobadas);
+
 // Función para cargar materias aprobadas desde almacenamiento local
-// function cargarMateriasAprobadas() {
-//     const materiasAprobadas = JSON.parse(localStorage.getItem('materiasAprobadas')) || [];
-//     const semestresSeleccionados = Array.from(document.querySelectorAll('.semestre-aprobado:checked')).map(input => input.value);
+function cargarMateriasReprobadas() {
+    const materiasReprobadas = JSON.parse(localStorage.getItem('materiasReprobadas')) || [];
+    const semestresSeleccionados = Array.from(document.querySelectorAll('.semestre-aprobado:checked')).map(input => input.value);
+    const materiasContainer = document.getElementById('materiasReprobadasContainer');
+    materiasContainer.innerHTML = '';
 
-//     const materiasContainer = document.getElementById('materiasAprobadasContainer');
-//     materiasContainer.innerHTML = '';
+    semestresSeleccionados.forEach(semestre => {
+        const semestreData = materiasData.semestres.find(s => s.semestre === semestre);
+        if (semestreData) {
+            semestreData.materias.forEach(materia => {
+                const materiaDiv = document.createElement('div');
+                const isChecked = materiasReprobadas.includes(materia.nombre);
+                materiaDiv.innerHTML = `
+                    <input type="checkbox" class="materia-reprobada" value="${materia.nombre}" ${isChecked ? 'checked' : ''}>
+                    <label>${materia.nombre}</label>
+                `;
+                materiasContainer.appendChild(materiaDiv);
+            });
+        }
+    });
+}
 
-//     semestresSeleccionados.forEach(semestre => {
-//         const semestreData = materiasData.semestres.find(s => s.semestre === semestre);
+document.querySelectorAll('.semestre-aprobado').forEach(input => {
+    input.addEventListener('change', cargarMateriasReprobadas);
+});
 
-//         if (semestreData) {
-//             semestreData.materias.forEach(materia => {
-//                 const materiaDiv = document.createElement('div');
-//                 const isChecked = materiasAprobadas.includes(materia.nombre);
-//                 materiaDiv.innerHTML = `
-//                     <input type="checkbox" class="materia-aprobada" value="${materia.nombre}" ${isChecked ? 'checked' : ''}>
-//                     <label>${materia.nombre}</label>
-//                 `;
-//                 materiasContainer.appendChild(materiaDiv);
-//             });
-//         }
-//     });
-// }
+cargarMateriasReprobadas();
 
 // Registrar evento para guardar materias aprobadas
 // document.getElementById('guardarMateriasAprobadas').addEventListener('click', guardarMateriasAprobadas);
 
 // Actualizar las materias aprobadas al cambiar los semestres seleccionados
-document.querySelectorAll('.semestre-aprobado').forEach(input => {
-    input.addEventListener('change', cargarMateriasAprobadas);
-});
+// document.querySelectorAll('.semestre-aprobado').forEach(input => {
+//     input.addEventListener('change', cargarMateriasAprobadas);
+// });
 
 // Llamar a la función cargarMaterias para inicializar las materias
 // cargarMateriasAprobadas();
@@ -487,37 +458,27 @@ const PREREQUISITOS = {
 // Función para verificar si se puede tomar un curso en base a cursos aprobados
 function canTakeCourse(courseName, approvedCourses) {
     const prerequisitos = PREREQUISITOS[courseName];
-    const materiasSabatinas = JSON.parse(localStorage.getItem("materiasSabatinas")) || []; // Obtener materias sabatinas
+    const materiasReprobadas = JSON.parse(localStorage.getItem("materiasReprobadas")) || [];
+    const materiasSabatinas = JSON.parse(localStorage.getItem("materiasSabatinas")) || [];
 
-    console.log("Materias sabatinas (no aprobadas):", materiasSabatinas);
+    // Si no hay prerequisitos, se puede cursar
+    if (!prerequisitos) return true;
 
-    // Si no hay prerequisitos, se puede tomar el curso
-    if (!prerequisitos) {
-        return true;
+    // Verificar prerequisitos bloqueados por reprobadas
+    const bloqueadas = prerequisitos.filter(prereq => materiasReprobadas.includes(prereq));
+    if (bloqueadas.length > 0) {
+        console.log(`${courseName} bloqueada por: ${bloqueadas.join(", ")}`);
+        return false;
     }
 
-    // Si no hay materias sabatinas, no bloquear ninguna materia
-    if (materiasSabatinas.length === 0) {
-        return true;
-    }
-
-    // Verificar si alguno de los prerequisitos está en las materias sabatinas
+    // Verificar prerequisitos bloqueados por sabatinas no aprobadas
     const materiasNoAprobadas = prerequisitos.filter(prereq => materiasSabatinas.includes(prereq));
-
     if (materiasNoAprobadas.length > 0) {
-        // Materia bloqueada, mostrar mensaje y devolver false
         console.log(`No se puede tomar ${courseName} porque depende de materias sabatinas no aprobadas: ${materiasNoAprobadas.join(", ")}`);
         return false;
     }
 
-    // Para cursos con requisitos previos alternativos
-    if (Array.isArray(prerequisitos[0])) {
-        return prerequisitos.some(prereqSet =>
-            prereqSet.every(prereq => approvedCourses.includes(prereq))
-        );
-    }
-
-    // Para cursos con requisitos previos obligatorios
+    // Validar requisitos obligatorios
     return prerequisitos.every(prereq => approvedCourses.includes(prereq));
 }
 
@@ -791,6 +752,11 @@ function calcularCreditosRestantes() {
     return creditosRestantes >= 0 ? creditosRestantes : 0; // No permitir valores negativos
 }
 
+if (!document.getElementById('horarioTable')) {
+    document.body.appendChild(contenedorHorarios);
+}
+
+
 // Modificar la función generarHorario para mostrar los 5 mejores horarios
 function generarHorario() {
     const materiasSeleccionadas = Array.from(document.querySelectorAll(".materia:checked"))
@@ -798,46 +764,44 @@ function generarHorario() {
             nombre: input.value,
             tipo: input.dataset.tipo
         }));
-
-    // Lista para almacenar las materias bloqueadas y sus razones
+    const materiasReprobadas = JSON.parse(localStorage.getItem("materiasReprobadas")) || [];
+    const materiasSabatinas = JSON.parse(localStorage.getItem("materiasSabatinas")) || [];
     const materiasBloqueadas = [];
 
-    // Verificar prerequisitos de todas las materias seleccionadas
-    for (let materia of materiasSeleccionadas) {
+    // Verificar si alguna materia está bloqueada por reprobadas
+    materiasSeleccionadas.forEach(materia => {
         const prerequisitos = PREREQUISITOS[materia.nombre];
-        const materiasSabatinas = JSON.parse(localStorage.getItem("materiasSabatinas")) || [];
-
-        // Verificar si alguno de los prerequisitos está en las materias sabatinas
-        const materiasNoAprobadas = prerequisitos?.filter(prereq => materiasSabatinas.includes(prereq)) || [];
-
-        if (materiasNoAprobadas.length > 0) {
-            materiasBloqueadas.push({
-                curso: materia.nombre,
-                dependencias: materiasNoAprobadas
-            });
+        if (prerequisitos) {
+            const bloqueadasPorReprobadas = prerequisitos.filter(prereq => materiasReprobadas.includes(prereq));
+            const bloqueadasPorSabatinas = prerequisitos.filter(prereq => materiasSabatinas.includes(prereq));
+            
+            if (bloqueadasPorReprobadas.length > 0 || bloqueadasPorSabatinas.length > 0) {
+                materiasBloqueadas.push({
+                    materia: materia.nombre,
+                    bloqueadasPor: bloqueadasPorReprobadas.concat(bloqueadasPorSabatinas)
+                });
+            }
         }
-    }
+    });
 
-    // Si hay materias bloqueadas, construir un mensaje detallado
+    // Si hay materias bloqueadas, mostrar alerta y detener la generación
     if (materiasBloqueadas.length > 0) {
         let mensaje = "No se puede generar el horario porque las siguientes materias están bloqueadas:\n\n";
-
-        materiasBloqueadas.forEach(item => {
-            mensaje += `- ${item.curso} porque depende de: ${item.dependencias.join(", ")}\n`;
+        materiasBloqueadas.forEach(({ materia, bloqueadasPor }) => {
+            mensaje += `- ${materia} está bloqueada por: ${bloqueadasPor.join(", ")}\n`;
         });
 
-        alert(mensaje);
-        console.log("Materias bloqueadas:", materiasBloqueadas);
-        return; // Detener la generación del horario
+        alert(mensaje); // Mostrar alerta al usuario
+        console.error("Materias bloqueadas:", materiasBloqueadas); // Para depuración
+        return; // Detener completamente la generación
     }
 
+    // Verificar créditos seleccionados
     const totalCreditosSabatino = JSON.parse(localStorage.getItem("totalCreditosSabatino")) || 0;
     const maxCreditosPermitidos = 27;
 
     // Calcular créditos seleccionados entre semana
     const creditosEntreSemana = calcularCreditosTotales(materiasSeleccionadas, materiasData);
-
-    // Sumar créditos sabatinos y validar el límite
     const creditosTotales = creditosEntreSemana + totalCreditosSabatino;
 
     if (creditosTotales > maxCreditosPermitidos) {
@@ -845,14 +809,8 @@ function generarHorario() {
         return;
     }
 
-    // Continuar con la generación del horario...
-    console.log("Créditos entre semana:", creditosEntreSemana);
-    console.log("Créditos sabatinos:", totalCreditosSabatino);
-    console.log("Créditos totales:", creditosTotales);
-
-    // Cargar los rangos de horarios guardados en localStorage
+    // Verificar rangos horarios
     const rangosGuardados = JSON.parse(localStorage.getItem('rangosHorarios')) || [];
-
     if (rangosGuardados.length === 0) {
         alert("Por favor, define al menos un rango de hora antes de generar el horario.");
         return;
@@ -860,9 +818,15 @@ function generarHorario() {
 
     // Añadir un contenedor para todos los horarios
     const contenedorHorarios = document.getElementById('contenedorHorarios') || 
-        document.createElement('div');
+    document.createElement('div');
     contenedorHorarios.id = 'contenedorHorarios';
     contenedorHorarios.innerHTML = '';
+
+    // Continuar con la lógica de generación del horario
+    console.log("Generación de horario exitosa. Materias seleccionadas:", materiasSeleccionadas);
+    console.log("Créditos entre semana:", creditosEntreSemana);
+    console.log("Créditos sabatinos:", totalCreditosSabatino);
+    console.log("Créditos totales:", creditosTotales);
 
     // Añadir diálogo de carga
     const loadingDialog = document.createElement('div');
@@ -945,6 +909,7 @@ function generarHorario() {
         }
     }, 0);
 }
+
 
 // Función auxiliar para encontrar opciones de materia en los datos
 function encontrarOpcionesMateria(nombreMateria, materiasData) {
