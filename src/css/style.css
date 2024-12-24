@@ -19,7 +19,7 @@ body {
     height: 100vh;
     max-height: 1200px;
 }
-p { margin: 2rem 0 1rem 0; }
+p { margin: 2rem 0 1rem 0; position: relative; width: fit-content; }
 
 select {
     border: 1px solid #ddd;
@@ -92,7 +92,7 @@ button {
     margin-top: 1rem;
     cursor: pointer;
     color: #fff;
-    background-color: #4f29f0;
+    background-color: #6361F2;
     font-size: 1.4rem;
     padding: 1rem 3rem;
     transition: all 0.2s ease-in-out 0ms;
@@ -101,7 +101,7 @@ button {
 }
   
 button:hover {
-    background-color: rgba(0, 0, 0, 0.849);
+    background-color: #14143d;
     box-shadow: 0px 0px 20px -18px;
 }
   
@@ -129,10 +129,20 @@ button:active {
     cursor: pointer;
 }
 .btn-verde {
-    background-color: #4CAF50;
+    background-color: #fff;
+    border: 1px solid #777777ad;
+    color: #5e5e5e;
+}
+button.btn-verde:hover {
+    background-color: #bdbdbd94;
+    border: none;
+    color: #fff;
 }
 .btn-azul {
-    background-color: #2196F3;
+    background-color: #6361F2;
+}
+button.btn-azul:hover {
+    background-color: #7D7AFF;
 }
 p.rango-horas{
     margin: 0;
@@ -143,12 +153,14 @@ p.rango-horas{
     padding: 0;
 }
 
-.hora-seleccionada {
-    background-color: #4f29f0;
-    width: fit-content;
-    padding: 1rem 2rem;
-    border-radius: .8rem;
-    color: #fff;
+.hora-seleccionada::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background-color: #6361F2;
 }
 
 /*-- Utilidades --*/
@@ -359,3 +371,5 @@ p.rango-horas{
     grid-template-columns: 1fr 2fr;
     gap: 1rem;
 }
+
+div#contadorCreditos { font-size: 1.5rem; }
