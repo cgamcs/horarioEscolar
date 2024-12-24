@@ -3,7 +3,7 @@ let materiasData;
 // Cargar el archivo JSON
 async function cargarDatos() {
     try {
-        const response = await fetch('horario_prueba.json');
+        const response = await fetch('../src/json/horario_prueba.json');
         if (!response.ok) {
             throw new Error("Error al cargar el archivo JSON");
         }
@@ -30,10 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', function () {
     const opcionSelect = document.getElementById("opcionSabatino");
+    const opcionReprobados = document.getElementById("opcionReprobado");
     const sabatinosDiv = document.querySelector('.sabatinos');
+    const reprobadosDiv = document.querySelector('.reprobados');
 
     // Inicializar la visibilidad del div.sabatinos en base a la opción seleccionada
     sabatinosDiv.style.display = opcionSelect.value === 'Si' ? 'block' : 'none';
+    reprobadosDiv.style.display = opcionSelect.value === 'Si' ? 'block' : 'none';
 
     // Manejar el cambio en el select principal
     opcionSelect.addEventListener('change', function() {
@@ -43,6 +46,19 @@ document.addEventListener('DOMContentLoaded', function () {
         if (this.value === 'No') {
             const checkboxesSemestre = document.querySelectorAll('.semestre-sabatino');
             const materiasContainer = document.getElementById('materiasSabatinoContainer');
+            checkboxesSemestre.forEach(cb => cb.checked = false);
+            materiasContainer.innerHTML = '';
+        }
+    });
+
+    // Manejar el cambio en el select principal
+    opcionReprobados.addEventListener('change', function() {
+        reprobadosDiv.style.display = this.value === 'Si' ? 'block' : 'none';
+        
+        // Si se selecciona "No", limpiar las materias seleccionadas
+        if (this.value === 'No') {
+            const checkboxesSemestre = document.querySelectorAll('.semestre-aprobado');
+            const materiasContainer = document.getElementById('materiasReprobadasContainer');
             checkboxesSemestre.forEach(cb => cb.checked = false);
             materiasContainer.innerHTML = '';
         }
@@ -68,11 +84,9 @@ document.querySelectorAll(".semestre-sabatino").forEach(checkbox => {
                     const label = document.createElement("label");
                     label.textContent = materia.nombre;
 
-                    const div = document.createElement("div");
-                    div.appendChild(checkbox);
-                    div.appendChild(label);
-
-                    materiasContainer.appendChild(div);
+                    materiasContainer.appendChild(checkbox);
+                    materiasContainer.appendChild(label);
+                    materiasContainer.classList.add('checklist');
                 });
             }
         });
@@ -139,8 +153,10 @@ function generarOpcionesMaterias() {
                 checkbox.value = materia.nombre;
                 const label = document.createElement("label");
                 label.textContent = materia.nombre;
+
                 materiasContainer.appendChild(checkbox);
                 materiasContainer.appendChild(label);
+                materiasContainer.classList.add('checklist');
             });
         }
     }
@@ -167,13 +183,16 @@ function cargarMateriasReprobadas() {
         const semestreData = materiasData.semestres.find(s => s.semestre === semestre);
         if (semestreData) {
             semestreData.materias.forEach(materia => {
-                const materiaDiv = document.createElement('div');
-                const isChecked = materiasReprobadas.includes(materia.nombre);
-                materiaDiv.innerHTML = `
-                    <input type="checkbox" class="materia-reprobada" value="${materia.nombre}" ${isChecked ? 'checked' : ''}>
-                    <label>${materia.nombre}</label>
-                `;
-                materiasContainer.appendChild(materiaDiv);
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.className = "materia";
+                checkbox.value = materia.nombre;
+                const label = document.createElement("label");
+                label.textContent = materia.nombre;
+                
+                materiasContainer.appendChild(checkbox);
+                materiasContainer.appendChild(label);
+                materiasContainer.classList.add('checklist');
             });
         }
     });
@@ -237,9 +256,8 @@ document.getElementById('nuevoRangoTiempo').addEventListener('click', function()
     
     nuevoRango.innerHTML = `
         <input type="time" name="hora-inicio-${contadorRangos}" id="hora-inicio-${contadorRangos}">
-        <label>Hora inicio</label>
+        <label>a</label>
         <input type="time" name="hora-fin-${contadorRangos}" id="hora-fin-${contadorRangos}">
-        <label>Hora fin</label>
         <button class="eliminar-rango" onclick="eliminarRango(${contadorRangos})">Eliminar</button>
     `;
     
@@ -289,7 +307,7 @@ function mostrarRangosGuardados(rangos) {
     rangos.forEach((rango, index) => {
         const rangoElement = document.createElement('div');
         rangoElement.innerHTML = `
-            <p>Rango ${index + 1}: ${rango.inicio} - ${rango.fin}</p>
+            <p class="hora-seleccionada">Rango ${index + 1}: ${rango.inicio} - ${rango.fin}</p>
         `;
         listaRangos.appendChild(rangoElement);
     });
