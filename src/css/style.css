@@ -129,12 +129,11 @@ button:active {
     cursor: pointer;
 }
 .btn-verde {
-    background-color: #fff;
-    border: 1px solid #777777ad;
-    color: #5e5e5e;
+    background-color: #5e5e5e;
+    color: #fff;
 }
 button.btn-verde:hover {
-    background-color: #bdbdbd94;
+    background-color: #777777ad;
     border: none;
     color: #fff;
 }
